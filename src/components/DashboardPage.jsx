@@ -2,7 +2,6 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react"
 import { styled } from "styled-components";
 import { CategoryChart } from "./CategoryChart";
-import { BarChart } from "./BarChart";
 
 const Container = styled.div`
     display: flex;
@@ -126,27 +125,31 @@ export const DashboardPage = () => {
     const [category3, setCategory3] = useState(0);
     const [category4, setCategory4] = useState(0);
     const [isDataFetched, setIsDataFetched] = useState(false);
+
+    const fetchData = () => {
+        Axios.get(`https://stg.dhunjam.in/account/admin/${id}`)
+            .then((response) => {
+                setData(response.data.data);
+                console.log(response.data.data);
+
+                if (response.data.data.charge_customers === true) {
+                    setSelectedOption('yes');
+                } else {
+                    setSelectedOption('no');
+                }
+                setPrice(response.data.data.amount.category_6);
+                setCategory1(response.data.data.amount.category_7);
+                setCategory2(response.data.data.amount.category_8);
+                setCategory3(response.data.data.amount.category_9);
+                setCategory4(response.data.data.amount.category_10);
+
+                setIsDataFetched(true);
+            });
+    }
     
     useEffect(() => {
         if (!isDataFetched) {
-            Axios.get(`https://stg.dhunjam.in/account/admin/${id}`)
-                .then((response) => {
-                    setData(response.data.data);
-                    console.log(response.data.data);
-
-                    if (response.data.data.charge_customers === true) {
-                        setSelectedOption('yes');
-                    } else {
-                        setSelectedOption('no');
-                    }
-                    setPrice(response.data.data.amount.category_6);
-                    setCategory1(response.data.data.amount.category_7);
-                    setCategory2(response.data.data.amount.category_8);
-                    setCategory3(response.data.data.amount.category_9);
-                    setCategory4(response.data.data.amount.category_10);
-
-                    setIsDataFetched(true);
-                });
+            fetchData();
         }
     }, [id, isDataFetched]);
     
@@ -164,13 +167,12 @@ export const DashboardPage = () => {
                 },
             });
             console.log(response.data);
+            fetchData();
         }
         catch (error) {
             console.error('Error: ' + error);
         }
     }
-
-    console.log(price);
     
     return (
         <React.Fragment>
