@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
-// import { YesNoRadioButton } from './YesNoRadioButton';
 import Axios from 'axios';
 
 const Container = styled.div`
@@ -96,6 +95,7 @@ export const RegistrationPage = () => {
             console.log(response.data.data.id);
             // setId(response.data.data.id);
             sessionStorage.setItem('id', response.data.data.id);
+            alert('Successfully Signed up');
         }
         catch (error) {
             console.error('Error: ' + error);
@@ -116,7 +116,7 @@ export const RegistrationPage = () => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder='Name'
-                            // required
+                            required
                         />
                     </FormGroup>
                     <FormGroup>
@@ -126,7 +126,7 @@ export const RegistrationPage = () => {
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                             placeholder='Location'
-                            // required
+                            required
                         />
                     </FormGroup>
                     <FormGroup>
@@ -136,7 +136,7 @@ export const RegistrationPage = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder='Email'
-                            // required
+                            required
                         />
                     </FormGroup>
                     <Button1 type="submit">
